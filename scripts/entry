@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+: ${AZURE_SUBSCRIPTION_ID?"Need to set AZURE_SUBSCRIPTION_ID"}
+: ${AKS_DNS_PREFIX?"Need to set AKS_DNS_PREFIX"}
+: ${AZURE_LOCATION?"Need to set AZURE_LOCATION"}
+: ${SPOTINST_ACCOUNT?"Need to set SPOTINST_ACCOUNT"}
+: ${SPOTINST_TOKEN?"Need to set SPOTINST_TOKEN"}
+: "${AZURE_RESOURCE_GROUP:=$AKS_DNS_PREFIX}"
+
+export AZURE_SUBSCRIPTION_ID
+export AKS_DNS_PREFIX
+export AZURE_LOCATION
+export SPOTINST_ACCOUNT
+export SPOTINST_TOKEN
+export AZURE_RESOURCE_GROUP
+
+if [ -e /scripts/"$1" ]; then
+    /scripts/"$@"
+else
+    "$@"
+fi
+
