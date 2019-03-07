@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+#az login \
+  #--service-principal \
+  #-u $AZURE_CLIENT_ID \
+  #-p $AZURE_CLIENT_SECRET \
+  #--tenant $AZURE_TENANT_ID
+
 aks-engine deploy \
   --auth-method client_secret \
   --client-id $AZURE_CLIENT_ID \
@@ -11,7 +17,6 @@ aks-engine deploy \
   --location $AZURE_LOCATION \
   --api-model /config/models/k8s-azurenet.json \
   -o /output/$AKS_DNS_PREFIX
-
 
 spotinst-aks-engine import\
   --resource-group $AZURE_RESOURCE_GROUP \
