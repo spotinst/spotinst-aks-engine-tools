@@ -1,11 +1,10 @@
-ARG AZURE_CLI_VERSION=2.0.59
+ARG AZURE_CLI_VERSION=2.3.0
 
-FROM microsoft/azure-cli:$AZURE_CLI_VERSION
+FROM mcr.microsoft.com/azure-cli:$AZURE_CLI_VERSION
 
 ARG AKS_ENGINE_VERSION=0.31.3
 ARG SPOTINST_AKS_ENGINE_VERSION=0.1.3
 ARG KUBECTL_VERSION=1.12.6
-
 
 ADD https://github.com/Azure/aks-engine/releases/download/v${AKS_ENGINE_VERSION}/aks-engine-v${AKS_ENGINE_VERSION}-linux-amd64.tar.gz /tmp
 ADD https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl /usr/local/bin/kubectl
@@ -16,7 +15,9 @@ RUN cd /tmp \
       && cp aks-engine-v${AKS_ENGINE_VERSION}-linux-amd64/aks-engine /usr/local/bin \
       && rm -rf aks-engine-v${AKS_ENGINE_VERSION}-linux-amd64* \
       && mkdir /app \
-      && chmod +x /usr/local/bin/spotinst-aks-engine
+      && chmod +x /usr/local/bin/spotinst-aks-engine \
+	  && apk update \
+	  && apk upgrade
 
 ADD scripts /scripts
 
@@ -26,5 +27,5 @@ VOLUME /config
 ADD models /config/models
 
 ENTRYPOINT ["/scripts/entry"]
-CMD bash
 
+CMD ["bash"]
